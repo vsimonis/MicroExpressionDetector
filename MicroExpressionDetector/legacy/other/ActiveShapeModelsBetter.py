@@ -4,7 +4,7 @@ import seaborn as sns
 import time
 import functools
 from pathos.multiprocessing import ProcessingPool as Pool
-from Geometry import Point, Shape
+from ActiveShapeModels import Point, Shape
 
 
 class ASMB( object ):
@@ -12,7 +12,7 @@ class ASMB( object ):
         self.allShapes = []
         self.n = 0
         self.refIxs = refIndices
-           self.nIters = numIterations
+        self.nIters = numIterations
     @property    
     def I( self ):
         return len( self.allShapes )

@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>73f21e65-4874-4521-9817-f5dc14f09649</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>MicroExpressionDetector.py</StartupFile>
+    <StartupFile>__main__.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,28 +22,34 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="active_shape_models\ActiveShape.py" />
-    <Compile Include="active_shape_models\DeformableASM.py" />
-    <Compile Include="active_shape_models\ParallelASM.py" />
+    <Compile Include="__main__.py" />
+    <Compile Include="shapes\ActiveShape.py" />
+    <Compile Include="active_shape_models\ActiveShapeModel.py" />
+    <Compile Include="legacy\models\DeformableASM.py" />
+    <Compile Include="legacy\models\ParallelASM.py" />
+    <Compile Include="active_shape_models\ShapeAligner.py" />
     <Compile Include="active_shape_models\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="helpers\FileHelper.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="legacy\ActiveShapeModels.py" />
-    <Compile Include="legacy\ActiveShapeModelsBetter.py" />
-    <Compile Include="legacy\main.py" />
-    <Compile Include="legacy\shapeNormalizationTest.py" />
-    <Compile Include="legacy\shapeNormalizationTestToSelf.py" />
-    <Compile Include="legacy\shapeNormTest1.py" />
-    <Compile Include="legacy\shapeTestMapper.py" />
-    <Compile Include="legacy\SimpleASM.py" />
-    <Compile Include="mains\applyASMMain.py" />
-    <Compile Include="mains\DASMMain.py" />
-    <Compile Include="mains\FaceMainPASM.py" />
-    <Compile Include="mains\FaceMainPCA.py" />
-    <Compile Include="mains\ParallelMain.py" />
+    <Compile Include="helpers\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="legacy\other\ActiveShapeModels.py" />
+    <Compile Include="legacy\other\ActiveShapeModelsBetter.py" />
+    <Compile Include="legacy\other\main.py" />
+    <Compile Include="legacy\other\shapeNormalizationTest.py" />
+    <Compile Include="legacy\other\shapeNormalizationTestToSelf.py" />
+    <Compile Include="legacy\other\shapeNormTest1.py" />
+    <Compile Include="legacy\other\shapeTestMapper.py" />
+    <Compile Include="legacy\other\SimpleASM.py" />
+    <Compile Include="legacy\mains\applyASMMain.py" />
+    <Compile Include="legacy\mains\DASMMain.py" />
+    <Compile Include="legacy\mains\FaceMainPASM.py" />
+    <Compile Include="legacy\mains\FaceMainPCA.py" />
+    <Compile Include="legacy\other\ParallelMain.py" />
     <Compile Include="MicroExpressionDetector.py" />
     <Compile Include="point_annotator\annotator.py" />
     <Compile Include="point_annotator\pointAnnotator.py" />
@@ -65,6 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="active_shape_models\" />
+    <Folder Include="legacy\models\" />
+    <Folder Include="legacy\mains\" />
+    <Folder Include="legacy\other\" />
     <Folder Include="mains\" />
     <Folder Include="legacy\" />
     <Folder Include="helpers\" />
@@ -74,6 +83,11 @@
     <Folder Include="script_tests\shapes\" />
     <Folder Include="shapes\" />
     <Folder Include="unit_tests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="mains\__init__.py">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

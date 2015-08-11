@@ -2,18 +2,12 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import seaborn as sns
-from Point import Point
+from shapes.Point import Point
+from shapes.Vector import Vector
 
 class Shape( object ):
     """
     Shape object
-
-    Data members:
-    - shapePoints
-    - R
-    - allPoints
-    - diffAllPoints
-    
     """
 
     def __init__(self, pointList ):
@@ -23,13 +17,14 @@ class Shape( object ):
         # Add points to shape
         if isinstance( pointList[0], list):
             for [x,y] in pointList:
-                self.shapePoints.append( Point(x,y) )
+                self.shapePoints.append( Vector(x,y) )
         elif isinstance( pointList[0], tuple):
             for (x,y) in pointList:
-                self.shapePoints.append( Point(x,y) )
+                self.shapePoints.append( Vector(x,y) )
         else:
             self.shapePoints = pointList
-        
+
+
     @property
     def xs( self ):
         """
@@ -55,28 +50,16 @@ class Shape( object ):
     def centroid( self ):
         return Point( np.mean( self.xs ) , np.mean( self.ys ) )
 
-    def unravel( self ):
+    @staticmethod
+    def unravel( pointList ):
         allPts = []
-        for pt in self.shapePoints:
+        for pt in pointList:
             allPts.append( pt.x)
             allPts.append( pt.y )
         return allPts 
 
 
-    # Shape operations
-    def transform( self, transformation ):
-        return map( lambda q : q.transform( transformation ), self.shapePoints )
-
-    def rotate( self, rotation ):
-        return map( lambda q : q.rotate( rotation ), self.shapePoints )
-
-    def translate( self, translation ):
-        return map( lambda q : q.translate( translation ) , self.shapePoints )
-
-    def scale( self, scaling ):
-        return map( lambda q : q.scale( scaling ) , self.shapePoints )
-
-
+    
     def draw( self, palette, axis ):
         _ = axis.scatter( self.xs, self.ys, c = palette, s= 10 )
 

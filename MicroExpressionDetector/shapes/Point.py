@@ -22,15 +22,13 @@ class Point( object ):
 
     def setY( self,y ):
         self.__y = y
-        #print 'new y'
 
     def setX( self,x ):
         self.__x = x
-        #punrint 'new x'
 
-    def dist( self, pt):
-        return math.sqrt( (self.__x - pt.x)**2 + (self.__y - pt.y)**2 )
-    
+    @staticmethod
+    def dist( p1, p2 ):
+        return math.sqrt( (p1.x - p2.x)**2 + (p1.y - p2.y)**2 )
 
     def __str__(self):
         return '%f\t%f\n' % ( self.x, self.y )

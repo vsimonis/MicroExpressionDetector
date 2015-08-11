@@ -20,64 +20,7 @@ class PASM( object ):
         self.refIxs = refIndices
         self.nIters = numIterations
 
-    @property    
-    def I( self ):
-        """ 
-        Returns the number of ASM training shapes
-        """
-        return len( self.allShapes )
-
-
-    def addShape( self, s ):
-        """
-        Adds a training shape to the ASM
-        Checks that the number of points in ASM of 
-        added shape is same as number of points in other ASM shapes
-        """
-        if len( self.allShapes ) == 0:
-            self.allShapes.append( s )
-            self.n = s.n
-        else:
-            assert( s.n == self.n )
-            self.allShapes.append( s )
     
-
-
-    def calcWs( self ):
-        """
-        Calculates and instantiates:
-        self.w <-- vector of weights (length == number of points (n) )
-        self.W <-- diagonal matrix representing vector (n x n)
-
-        These weights represent the influence of each point
-        (by distance among corresponding points across training shapes)  
-
-        
-
-        """
-        start = time.time()
-        # Get variance matrix V
-        for mm in range( len(self.allShapes) ):
-            self.allShapes[mm].calcR()
-            
-        V = []
-        for k in range(self.n):
-            row = []
-            for l in range(self.n):
-                col = []
-                for i in range(len( self.allShapes )):
-                    col.append( self.allShapes[i].R[k][l])
-                row.append( np.var(col) )
-            V.append(row)
-       
-
-        s = map( sum, V)
-        self.w = [ math.pow( j, -1) for j in s]
-        #self.w = [ 1 for j in s]
-        self.W = np.diag(self.w)
-        ##print "calcWs: %f" % (time.time() - start)
-        
-
     def Zgen( self, shape ):
         return sum( [  self.w[k] * ( shape.xs[k] **2 +
                                     shape.xs[k] **2 )
@@ -108,12 +51,6 @@ class PASM( object ):
 
     
       
-    def calcMeanShape( self ):
-        start = time.time()
-        xList = [ el.xs for el in self.allShapes ]
-        yList = [ el.ys for el in self.allShapes ]
-        meanPointsList = zip( np.mean(xList, 0), np.mean(yList, 0) )
-        self.meanShape = Shape( meanPointsList )
         #print "CalcMeanShape %f" % (time.time() - start)
 
 
