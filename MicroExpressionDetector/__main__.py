@@ -98,7 +98,7 @@ def process( fPts, fImgs, train, method, maxPx, fSize ):
               "filterPts" : fPts,
               "filterImgs" : fImgs,
               "trainASM" : train, 
-              "writePCA" : True,
+              "writePCA" : False,
               "maxPx" : maxPx,
               "fSize" : fSize,
               "method" : method

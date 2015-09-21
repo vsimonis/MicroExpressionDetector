@@ -78,18 +78,18 @@ class TemplateMatcher(object):
         return stuff
 
     
-    @staticmethod
-    def genRegionsArr( I, model ):
+
+    def genRegionsArr( self, I, model ):
         regions = []
         for pt in model.shapePoints :
-            regions.append( TemplateMatcher.slice( I, 25, pt ) )
+            regions.append( TemplateMatcher.slice( I, self.n, pt ) )
         return regions
 
 
     def genTemplatesArr( self ):
         templates = []
         for pt in self.ebenShape.shapePoints :
-            templates.append( TemplateMatcher.slice( self.ebenImg, 5, pt ) )
+            templates.append( TemplateMatcher.slice( self.ebenImg, self.n, pt ) )
         return templates
 
     def genTemplatesDict( self ):

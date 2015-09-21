@@ -33,12 +33,24 @@
     <Compile Include="image_processing\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="script_tests\image_processing\template_matching_class.py">
+    <Compile Include="tests\script_tests\image_processing\correlation.py" />
+    <Compile Include="tests\script_tests\image_processing\response.py" />
+    <Compile Include="tests\script_tests\image_processing\template_matching.py" />
+    <Compile Include="tests\script_tests\image_processing\template_matching_class.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="script_tests\image_processing\template_matching_parallel.py">
+    <Compile Include="tests\script_tests\image_processing\template_matching_parallel.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tests\script_tests\active_shape_models\face_ASM_test.py" />
+    <Compile Include="tests\script_tests\active_shape_models\face_read_points.py" />
+    <Compile Include="tests\script_tests\active_shape_models\filter_training.py" />
+    <Compile Include="tests\script_tests\active_shape_models\gradient_deform_test.py" />
+    <Compile Include="tests\script_tests\active_shape_models\parallel_pool_rotation_test.py" />
+    <Compile Include="tests\script_tests\active_shape_models\PCA_triangle_test.py" />
+    <Compile Include="tests\script_tests\active_shape_models\shapeNormalizationTest.py" />
+    <Compile Include="tests\script_tests\active_shape_models\shapeNormalizationTestToSelf.py" />
+    <Compile Include="tests\script_tests\active_shape_models\shapeNormTest1.py" />
     <Compile Include="tests\script_tests\shapes\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -74,15 +86,6 @@
     <Compile Include="MicroExpressionDetector.py" />
     <Compile Include="point_annotator\annotator.py" />
     <Compile Include="point_annotator\pointAnnotator.py" />
-    <Compile Include="script_tests\active_shape_models\face_ASM_test.py" />
-    <Compile Include="script_tests\active_shape_models\face_read_points.py" />
-    <Compile Include="script_tests\active_shape_models\gradient_deform_test.py" />
-    <Compile Include="script_tests\active_shape_models\parallel_pool_rotation_test.py" />
-    <Compile Include="script_tests\active_shape_models\PCA_triangle_test.py" />
-    <Compile Include="script_tests\active_shape_models\shapeNormalizationTest.py" />
-    <Compile Include="script_tests\active_shape_models\shapeNormalizationTestToSelf.py" />
-    <Compile Include="script_tests\active_shape_models\shapeNormTest1.py" />
-    <Compile Include="script_tests\shapes\rotation_angle_test.py" />
     <Compile Include="shapes\Point.py" />
     <Compile Include="shapes\Shape.py" />
     <Compile Include="shapes\Vector.py" />
@@ -100,13 +103,11 @@
     <Folder Include="legacy\" />
     <Folder Include="helpers\" />
     <Folder Include="point_annotator\" />
-    <Folder Include="script_tests\" />
-    <Folder Include="script_tests\active_shape_models\" />
-    <Folder Include="script_tests\image_processing\" />
-    <Folder Include="script_tests\shapes\" />
+    <Folder Include="tests\script_tests\image_processing\" />
     <Folder Include="shapes\" />
     <Folder Include="tests\" />
     <Folder Include="tests\script_tests\" />
+    <Folder Include="tests\script_tests\active_shape_models\" />
     <Folder Include="tests\script_tests\shapes\" />
     <Folder Include="unit_tests\" />
   </ItemGroup>
