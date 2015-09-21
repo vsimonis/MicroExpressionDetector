@@ -22,7 +22,7 @@ class DASM( PASM):
     @property
     def appModel( self ):
         shape = copy.deepcopy( self.model )
-        shape.transform( self.modelParams )
+        shape = shape.transform( self.modelParams )
         return shape
 
 

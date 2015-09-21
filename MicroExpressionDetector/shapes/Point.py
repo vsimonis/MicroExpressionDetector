@@ -6,6 +6,12 @@ class Point( object ):
     def __init__( self, x, y):
         self.__x = float(x)
         self.__y = float(y)
+
+    @classmethod
+    def fromTuple( cls, tup ):
+        x = tup[0]
+        y = tup[1] 
+        return cls( x, y )
         
     ## Properties (avoid need to update) 
     @property

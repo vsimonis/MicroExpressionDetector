@@ -67,7 +67,6 @@ def findEyes( img_gray ):
     im_toshow = copy.deepcopy(img_gray)
     eyeArr = []
     for (ex,ey,ew,eh) in eyes:
-
         cv2.rectangle(im_toshow,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
         eyeArr.append( ( ex, ey, ew, eh ) )
 
@@ -88,8 +87,8 @@ def findEyes( img_gray ):
     ex2, ey2, ew2, eh2 = eye2
     eye2loc = Point( ex2 + ew2/2,ey2+ eh2/2)
 
-    cv2.circle( im_toshow, ( int(eye1loc.x), int(eye1loc.y) ), 1, (255,255,255) )
-    cv2.circle( im_toshow, ( int(eye2loc.x), int(eye2loc.y) ), 1, (255,255,255) )
+    #cv2.circle( im_toshow, ( int(eye1loc.x), int(eye1loc.y) ), 1, (255,255,255) )
+    #cv2.circle( im_toshow, ( int(eye2loc.x), int(eye2loc.y) ), 1, (255,255,255) )
     #showImg( im_toshow ) 
     return eye1loc, eye2loc
 

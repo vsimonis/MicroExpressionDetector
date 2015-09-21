@@ -8,19 +8,21 @@ from shapes.Vector import Vector
 class Shape( object ):
     """
     Shape object
-    """
+    """                         
 
     def __init__(self, pointList ):
 
         self.shapePoints = []
         
         # Add points to shape
+
         if isinstance( pointList[0], list):
             for [x,y] in pointList:
                 self.shapePoints.append( Vector(x,y) )
         elif isinstance( pointList[0], tuple):
             for (x,y) in pointList:
                 self.shapePoints.append( Vector(x,y) )
+        
         else:
             self.shapePoints = pointList
 
@@ -52,16 +54,20 @@ class Shape( object ):
 
     @staticmethod
     def unravel( pointList ):
-        allPts = []
+        allPts = []                      
         for pt in pointList:
-            allPts.append( pt.x)
+            allPts.append( pt.x )
             allPts.append( pt.y )
         return allPts 
+
+    
+    def flatten( self ):
+        return self.unravel( self.shapePoints )
 
 
     
     def draw( self, palette, axis ):
-        _ = axis.scatter( self.xs, self.ys, c = palette, s= 10 )
+        _ = axis.scatter( self.xs, self.ys, c = palette, s= 3 )
 
 
     def __str__( self ):

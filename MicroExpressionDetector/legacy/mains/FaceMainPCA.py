@@ -30,6 +30,7 @@ def main():
         showVaryMultiplePCS( asm, vals, vecs, 5, i+1 )
         showVary( asm, vals, vecs, 5, i, 0.25)
         exampleEvalEvecs(asm, vecs, vals, i ) 
+
     ### Draw all faces
     for sh in asm.allShapes :
         FaceDraw( sh, plt ).drawContrast()
@@ -149,6 +150,7 @@ def exampleVariance( vecs, vals ):
     for e in range(10):
         showVary( asm, vals, vecs, 5, e, 0.5 )
 
+"""
 def readIn( ):
     allLines = None
     with open( "outfile-ASM-100iters-500tr.txt", "r") as infile:
@@ -174,6 +176,6 @@ def readIn( ):
         else:
             s.append( Point( float(tuple[0]), float(tuple[1]) ) )
     return asm
-
+"""
 if __name__ == "__main__":
     main()

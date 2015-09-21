@@ -22,6 +22,27 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="active_shape_models\ApplyASM.py" />
+    <Compile Include="active_shape_models\PointMovementCalculator.py" />
+    <Compile Include="helpers\DrawFace.py" />
+    <Compile Include="helpers\log.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="helpers\WriteUpHelper.py" />
+    <Compile Include="image_processing\TemplateMatcher.py" />
+    <Compile Include="image_processing\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="script_tests\image_processing\template_matching_class.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="script_tests\image_processing\template_matching_parallel.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\script_tests\shapes\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\script_tests\shapes\shape_aligment_test.py" />
     <Compile Include="__main__.py" />
     <Compile Include="shapes\ActiveShape.py" />
     <Compile Include="active_shape_models\ActiveShapeModel.py" />
@@ -71,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="active_shape_models\" />
+    <Folder Include="image_processing\" />
     <Folder Include="legacy\models\" />
     <Folder Include="legacy\mains\" />
     <Folder Include="legacy\other\" />
@@ -80,8 +102,12 @@
     <Folder Include="point_annotator\" />
     <Folder Include="script_tests\" />
     <Folder Include="script_tests\active_shape_models\" />
+    <Folder Include="script_tests\image_processing\" />
     <Folder Include="script_tests\shapes\" />
     <Folder Include="shapes\" />
+    <Folder Include="tests\" />
+    <Folder Include="tests\script_tests\" />
+    <Folder Include="tests\script_tests\shapes\" />
     <Folder Include="unit_tests\" />
   </ItemGroup>
   <ItemGroup>
