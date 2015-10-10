@@ -1,6 +1,0 @@
-class (object):
-    pass
-
-
-
-

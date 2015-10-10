@@ -42,13 +42,13 @@ def applyRun( ):
     train = False
     for filterPoints in [ True, False ]:
         for filterImages in [ True, False ] :
-            for method in [ "grad", "SSD", "nCorr" ] :
+            for method in [ 'grad',"SSD", "nCorr" ] :
                 if method == "grad":
                     for maxPx in [5,10,15,30,50]:
                         process( filterPoints, filterImages, train, method, maxPx, 0 )
                 else :
-                    for filter in [ 3,5,7 ]:
-                        process( filterPoints, filterImages, train, method, 0, filter )
+                    for filter in [ 3, 5, 7 ]:
+                        process( filterPoints, filterImages, train, method                                , 0, filter )
 
             
     
@@ -141,7 +141,7 @@ def process( fPts, fImgs, train, method, maxPx, fSize ):
         img =  cv2.cvtColor( img, cv2.COLOR_BGR2GRAY)
         appASM = ApplyASM( asm, params["nIters"], params["nTrain"],
                           appASMout, img, params['method'], 
-                          params['maxPx'], params['fSize']  )
+                          params['maxPx'], params['fSize'], params["filterPts"]  )
         appASM.applyASM()
 
 

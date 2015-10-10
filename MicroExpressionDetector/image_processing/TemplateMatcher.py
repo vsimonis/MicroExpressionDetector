@@ -7,29 +7,35 @@ import math
 import time
 
 class TemplateMatcher(object):
-    def __init__( self, method, n ):
-
+    def __init__( self, method, n, fpts ):
+        self.fPts = fpts
         ## Training
-        self.ebenImg, self.ebenShape = TemplateMatcher.getEben()
+        self.ebenImg, self.ebenShape = self.getEben()
         #self.templates = self.genTemplates() 
         self.method = method
         self.n = n
+        
                                                                             
 
     def performMatching( self, I, model ):
         r = self.genRegionsArr( I, model )
         t = self.genTemplatesArr()
-        
-        matchesDx = PPool().map( self.match, r,t )
+        matchesDx = map( lambda x,y : self.match( x, y) , r,t )
         return np.ravel( matchesDx )
 
     def match( self, r, t):
         ixs = TemplateMatcher.matIxs( self.n ** 2 )
+        #for ixx in ixs:
+            #print ixx.x, ixx.y
         ix = 0
         ws = map( lambda x : TemplateMatcher.slice( r, self.n, x ), ixs )
+       # print "ws"
+       # print ws
+
         if self.method == "SSD" :
             resp = map( lambda w : self.SSD( t, w ), ws )
             ix = np.argmin( resp )
+#            print "ix %d, ixs:%d,%d" % (ix, ixs[ix].x, ixs[ix].y )
         else : 
             resp = map( lambda w : self.normCorr( t, w ), ws )
             ix = np.argmin( resp )
@@ -74,7 +80,7 @@ class TemplateMatcher(object):
             stuff = PPool().map( self.processRegionSSD, self.genRegionsArr(I, model) ) 
         else:
             stuff = PPool().map( self.processRegionNormCorr, self.genRegionsArr(I, model) ) 
-        print "match: %f" % ( time.time() - start)
+        #print "match: %f" % ( time.time() - start)
         return stuff
 
     
@@ -82,7 +88,8 @@ class TemplateMatcher(object):
     def genRegionsArr( self, I, model ):
         regions = []
         for pt in model.shapePoints :
-            regions.append( TemplateMatcher.slice( I, self.n, pt ) )
+        #    print pt.x, pt.y
+            regions.append( TemplateMatcher.slice( I, self.n ** 2, pt ) )
         return regions
 
 
@@ -96,17 +103,17 @@ class TemplateMatcher(object):
         templates = {}
         ix = 0
         for pt in self.ebenShape.shapePoints :
-            templates.update( { ix :  TemplateMatcher.slice( self.ebenImg, 5, pt ) } )
+            templates.update( { ix :  TemplateMatcher.slice( self.ebenImg, self.n, pt ) } )
         return templates
 
 
-    @staticmethod
-    def getEben( ):
+
+    def getEben( self ):
         i = 20
         tr = 500
         out =    "C:\\Users\\Valerie\\Desktop\\output\\20-500-1" 
         ### END OF NEED?
-        fh = FileHelper( i, tr, out, False,False ) 
+        fh = FileHelper( i, tr, out, self.fPts, False) 
         trainImg = fh.readInEbenImg()
         trainPts = fh.readInOneDude( '000_1_1.pts')  
         return trainImg, ActiveShape( trainPts )
@@ -115,8 +122,11 @@ class TemplateMatcher(object):
     @staticmethod
     def hinge( v, n ):
         # return lower and upper bounds of n x n region around float/int v
+#        print v
+#        print n
         lower = int(round(v) - math.floor( n / 2 ))
         upper = int(round(v) + math.floor( n / 2 ))
+
         return lower, upper
 
     @staticmethod
@@ -207,7 +217,10 @@ class TemplateMatcher(object):
     def coordOffset( pt, n ):
         y = pt.y   #row
         x = pt.x   #col
-        return Vector.unit( [[ x - ( n - 1) / 2],[ y - ( n - 1 ) / 2  ] ])
+        v = Vector.unit( [[ x - ( n - 1) / 2],[ y - ( n - 1 )/ 2  ] ])
+#        print type(v)
+        #print "CoordOff: %f %f" % (v[0], v[1])
+        return v
 
     def corr( template, image ):
         t = np.ravel( template - np.mean( template ))

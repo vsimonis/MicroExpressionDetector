@@ -45,8 +45,14 @@ class Vector( Point ):
 
     @staticmethod
     def unit( v ): 
+        #print "UNITV"
+        #print v
+        if np.linalg.norm( v )  == 0:
+            return np.array(v)
+
         if v[0] == 0 and v[1] == 0:
             return v
+
         else:
             return v / np.linalg.norm( v )
 

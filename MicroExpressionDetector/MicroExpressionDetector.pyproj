@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>73f21e65-4874-4521-9817-f5dc14f09649</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>__main__.py</StartupFile>
+    <StartupFile>__ASM-main__.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -34,7 +34,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\script_tests\image_processing\correlation.py" />
-    <Compile Include="tests\script_tests\image_processing\response.py" />
     <Compile Include="tests\script_tests\image_processing\template_matching.py" />
     <Compile Include="tests\script_tests\image_processing\template_matching_class.py">
       <SubType>Code</SubType>
@@ -55,7 +54,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="tests\script_tests\shapes\shape_aligment_test.py" />
-    <Compile Include="__main__.py" />
+    <Compile Include="__ASM-main__.py" />
     <Compile Include="shapes\ActiveShape.py" />
     <Compile Include="active_shape_models\ActiveShapeModel.py" />
     <Compile Include="legacy\models\DeformableASM.py" />
@@ -102,6 +101,7 @@
     <Folder Include="mains\" />
     <Folder Include="legacy\" />
     <Folder Include="helpers\" />
+    <Folder Include="machine_learning\" />
     <Folder Include="point_annotator\" />
     <Folder Include="tests\script_tests\image_processing\" />
     <Folder Include="shapes\" />
@@ -109,7 +109,6 @@
     <Folder Include="tests\script_tests\" />
     <Folder Include="tests\script_tests\active_shape_models\" />
     <Folder Include="tests\script_tests\shapes\" />
-    <Folder Include="unit_tests\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="mains\__init__.py">

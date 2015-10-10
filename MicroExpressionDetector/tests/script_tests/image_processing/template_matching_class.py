@@ -1,4 +1,3 @@
-from image_processing.TemplateMatcher import TemplateMatcher
 import cv2
 from helpers.FileHelper import FileHelper
 from helpers.DrawFace import DrawFace
@@ -10,6 +9,7 @@ from matplotlib import pyplot as plt
 from matplotlib import gridspec
 import numpy as np
 import math
+from image_processing.TemplateMatcher import TemplateMatcher
 
 i = 20
 tr = 500
@@ -20,6 +20,35 @@ fh = FileHelper( i, tr, out, False, False )
 ebenFace  =  fh.readInImage()
 ebenPoints = fh.readInOneDude( '000_1_1.pts')  
 ebenShape = ActiveShape( ebenPoints )
+
+## draw indices
+DrawFace( ebenShape, plt).labelIndices()
+plt.imshow( ebenFace )
+plt.set_cmap( "gray" )
+plt.gca().axes.xaxis.set_ticks([])
+plt.gca().axes.yaxis.set_ticks([])
+plt.show()
+
+
+fh = FileHelper( i, tr, out, True, False )
+
+ebenFace  =  fh.readInImage()
+ebenPoints = fh.readInOneDude( '000_1_1.pts')  
+ebenShape = ActiveShape( ebenPoints 
+
+## draw indices
+DrawFace( ebenShape, plt).labelIndices()
+plt.imshow( ebenFace )
+plt.set_cmap( "gray" )
+plt.set_cmap( "gray" )
+plt.gca().axes.xaxis.set_ticks([])
+plt.gca().axes.yaxis.set_ticks([])
+
+plt.show()
+
+
+
+
  
 #### MATCHING PROCESS
 
@@ -34,5 +63,5 @@ asm.PCA()
 appASM = ApplyASM( asm, i, tr, out, I, "SSD", 5,5 )
 m, tdict = appASM.initialPosition( )
 
-TM = TemplateMatcher( 'SSD', 5 )
+TM = TemplateMatcher( 'SSD', 5, True )
 TM.performMatching(I, m)

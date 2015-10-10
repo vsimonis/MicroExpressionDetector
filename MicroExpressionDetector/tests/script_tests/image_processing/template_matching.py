@@ -87,13 +87,13 @@ def coordOffset( pt, n ):
 #def run( ):
 i = 20
 tr = 500
-out =    "C:\\Users\\Valerie\\Desktop\\output\\20-500-1" 
+out =    "C:\\Users\\Valerie\\Desktop\\output" 
 
-fh = FileHelper( i, tr, out )
+fh = FileHelper( i, tr, out, True, True )
 
 ebenFace  =  fh.readInImage()
 ebenPoints = fh.readInOneDude( '000_1_1.pts')  
-ebenShape = ActiveShape( ebenPoints )
+ebenShape = ActiveShape( ebenPoints )     
  
 #### MATCHING PROCESS
 
