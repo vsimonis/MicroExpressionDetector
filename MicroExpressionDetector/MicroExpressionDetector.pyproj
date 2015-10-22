@@ -50,6 +50,13 @@
     <Compile Include="tests\script_tests\active_shape_models\shapeNormalizationTest.py" />
     <Compile Include="tests\script_tests\active_shape_models\shapeNormalizationTestToSelf.py" />
     <Compile Include="tests\script_tests\active_shape_models\shapeNormTest1.py" />
+    <Compile Include="tests\script_tests\pipeline\CASME_video_structure.py" />
+    <Compile Include="tests\script_tests\feature_extraction\video_capture_face_detection_MSER_affine_dictionary.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="tests\script_tests\pipeline\simple_video.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tests\script_tests\shapes\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -91,6 +98,7 @@
     <Compile Include="shapes\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="__main__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="active_shape_models\" />
@@ -108,6 +116,8 @@
     <Folder Include="tests\" />
     <Folder Include="tests\script_tests\" />
     <Folder Include="tests\script_tests\active_shape_models\" />
+    <Folder Include="tests\script_tests\feature_extraction\" />
+    <Folder Include="tests\script_tests\pipeline\" />
     <Folder Include="tests\script_tests\shapes\" />
   </ItemGroup>
   <ItemGroup>
