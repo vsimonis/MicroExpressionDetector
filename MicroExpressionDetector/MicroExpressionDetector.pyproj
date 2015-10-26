@@ -54,9 +54,11 @@
     <Compile Include="tests\script_tests\feature_extraction\video_capture_face_detection_MSER_affine_dictionary.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tests\script_tests\pipeline\img_eye_detection_debug.py" />
     <Compile Include="tests\script_tests\pipeline\simple_video.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tests\script_tests\shapes\rotation_angle_test.py" />
     <Compile Include="tests\script_tests\shapes\__init__.py">
       <SubType>Code</SubType>
     </Compile>

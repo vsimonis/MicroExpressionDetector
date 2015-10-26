@@ -5,6 +5,9 @@ import math
 import numpy as np
 from matplotlib import pyplot as plt
 import re
+import copy
+from shapes.Point import Point
+
   
 def getLabelInfo( sub, vid, df, videoKey ):
    
@@ -118,23 +121,113 @@ def process(img, filters):   ## apply all filters to one image
 def readInImg( imgPath ):
     img = cv2.imread( imgPath )
     img = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY )
+    img = crop( img, 2.5, 2)
     # resize to 28ish * 23ish
-    img = cv2.resize( img, dsize= (0,0), fx = .1, fy = 0.1, interpolation = cv2.INTER_NEAREST )
+    
     return img
 
 
-def readInVideo( vidPath ):
-        CASCADE='C:\\OpenCV\\data\\haarcascades\\haarcascade_frontalface_default.xml'
+def downsample( img ):
+    img = cv2.resize( img, dsize= (0,0), fx = .1, fy = 0.1, interpolation = cv2.INTER_NEAREST )
+    return img
+
+def crop( img, fh, fw ):       ## In terms of x, y not h, w !!!   # or the other way>>>
+    ## USING FACES
+    #face_cascade = cv2.CascadeClassifier('C:\\OpenCV\\data\\haarcascades\\haarcascade_frontalface_default.xml')
+    #faces = face_cascade.detectMultiScale( img, 1.3, 5)
+    #x,y,w,h = faces[0]
+    #roi_gray = img[y:y+h, x:x+w]   
+    
+    ## USING EYES
+    eye_cascade = cv2.CascadeClassifier('C:\\OpenCV\\data\\haarcascades\\haarcascade_eye.xml')
+    eyes = eye_cascade.detectMultiScale( img )
+
+    eye1, eye2 = filterFoundEyes( eyes, img )
+    d = Point.dist( eye1, eye2 )
+#    print d
+    newH = int(fh * d)  #set more firmly for other types of images for consistent size
+    newW = int(fw * d)
+    
+    y0, x0 = newEyeLoc( eye1, eye2, newH, newW, d )
+#    print newH, newW
+    return img[ y0 : y0 + newH, x0 : x0  + newW ]
+
+def newEyeLoc( eye1, eye2, newH, newW, d):
+    if eye1.x < eye2.x:
+        y0 = eye1.y - ( newH ) / 3
+        x0 = eye1.x - ( newW - d )/2
+    else:
+        y0 = eye2.y - ( newH ) / 3
+        x0 = eye2.x - ( newW - d )/2
+    return y0, x0
+        
+    
+    
+    
+    
 
 
+
+#    im_toshow = copy.deepcopy( img )
+#    cv2.circle( im_toshow, eye1, 10, (1,0,0) )
+#    cv2.circle( im_toshow, eye2, 10, (0,1,0) )
+#    plt.imshow( im_toshow, cmap = "gray" )
+#    plt.show()
+   
+def areaRect( tup ):
+    return tup[2] * tup[3]
+
+def filterFoundEyes( eyes, img ):
+    if len( eyes ) > 1:  ## if multiple eyes are returned, get biggest one
+        eyeArr = []
+        for (ex,ey,ew,eh) in eyes:
+            #cv2.rectangle(im_toshow,(ex,ey),(ex+ew,ey+eh),(0,255,0),2)
+            eyeArr.append( ( ex, ey, ew, eh ) )
+
+        # filter by area
+        eyeAreas = map( areaRect, eyeArr )
+        ix = np.argmax( eyeAreas )
+        eye1 = eyeArr[ix]
+    
+        eyeAreas.pop( ix )
+        eyeArr.pop(ix )
+
+        ix = np.argmax( eyeAreas )
+        eye2 = eyeArr[ix]
+        
+        ex1, ey1, ew1, eh1 = eye1
+        ex2, ey2, ew2, eh2 = eye2
+
+    else:   ## just one eye, estimate the other
+        ex, ey, ew, eh = eyes[0] 
+        w0 = np.shape( img )[1]
+        if ex < w0 / 2:
+            ex1, ey1, ew1, eh1 = [  ex, ey, ew, eh  ]
+            ex2, ey2, ew2, eh2 = [ ex + w0/5, ey, ew, eh ]
+        else: 
+            ex1, ey1, ew1, eh1 = [  ex - w0/5, ey, ew, eh  ]
+            ex2, ey2, ew2, eh2 = [ ex, ey, ew, eh ]
+            
+ 
+
+    eye1loc = Point( ex1 + ew1/2, ey1+ eh1/2 )
+    eye2loc = Point( ex2 + ew2/2, ey2+ eh2/2)
+
+    # cv2.circle( self.img, ( int(eye1loc.x), int(eye1loc.y) ), 1, (255,0,0) )
+    # cv2.circle( self.img, ( int(eye2loc.x), int(eye2loc.y) ), 1, (255,0,0) )
+    #showImg( im_toshow ) 
+    return eye1loc, eye2loc         
+
+
+                                                                           
 def displayGabor( imgs ):
     for im in imgs:
         plt.imshow( im, cmap = 'gray' )
         plt.show()
     
 
-DATA = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\Cropped\Cropped"
-DATA1 = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\CASME2_RAW\CASME2-RAW"
+DATA1 = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\Cropped\Cropped"
+DATA = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\CASME2_RAW\CASME2-RAW"
 DIR = "C:\Users\Valerie\Desktop\MicroExpress\CASME2"
 
 
@@ -152,16 +245,23 @@ s = 0
 for sub in os.listdir( DATA ): 
     v = 0
     for vid in os.listdir( os.path.join( DATA, sub ) ):
+        if vid.endswith( "avi" ):
+            break
+        print vid   
+
+
         intLabelInfo, labelParams = getLabelInfo( sub, vid, t, [s, v] )
         f = 0
         for frame in os.listdir( os.path.join( DATA, sub, vid ) ):
+            ## Skip avi's
+
             # Label Information
             # merge intLabelInfo and frameParams and assign frame number as key to avoid wiping out in update
             frameInfo = getFrameParams( intLabelInfo, labelParams, f, frame )
             frameInfo.update( intLabelInfo )
             labelInfo.update( { tf :  frameInfo } )
-           
-            featureInfo.append( process( readInImg( os.path.join( DATA, sub, vid, frame)  ), generateGabor( 9, 8 ) ) )
+            img = downsample( readInImg( os.path.join( DATA, sub, vid, frame ) ) ) 
+            featureInfo.append( process( img, generateGabor( 9, 8 ) ) )
             f += 1
             tf += 1
         v += 1
@@ -173,4 +273,15 @@ labels = pd.DataFrame.from_dict( labelInfo, orient = 'index' )
 labels[ (labels['video'] == 0) & (labels['subject'] == 0) ]
 
 
-        
+
+
+
+IMG = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\CASME2_RAW\CASME2-RAW\sub01\EP02_01f\img1.jpg"
+I = readInImg( IMG )
+plt.imshow( I, cmap = 'gray')
+plt.show() 
+
+newI = crop( I, 2.5, 2 )     
+plt.imshow( newI, cmap = 'gray')
+plt.show() 
+              
