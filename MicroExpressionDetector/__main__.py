@@ -121,14 +121,16 @@ def process(img, filters):   ## apply all filters to one image
 def readInImg( imgPath ):
     img = cv2.imread( imgPath )
     img = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY )
-    img = crop( img, 2.5, 2)
+    if np.shape( img )[0] > 400:
+        img = crop( img, 2.5, 2)
     # resize to 28ish * 23ish
     
     return img
 
 
-def downsample( img ):
-    img = cv2.resize( img, dsize= (0,0), fx = .1, fy = 0.1, interpolation = cv2.INTER_NEAREST )
+def downsample( img, dim1, dim2 ):
+    #img = cv2.resize( img, dsize= (dim,dim), fx = .1, fy = 0.1, interpolation = cv2.INTER_NEAREST )
+    img = cv2.resize( img, dsize= (dim1,dim2), interpolation = cv2.INTER_NEAREST )
     return img
 
 def crop( img, fh, fw ):       ## In terms of x, y not h, w !!!   # or the other way>>>
@@ -226,10 +228,14 @@ def displayGabor( imgs ):
         plt.show()
     
 
-DATA1 = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\Cropped\Cropped"
-DATA = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\CASME2_RAW\CASME2-RAW"
+DATA = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\Cropped\Cropped"
+DATA1 = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\CASME2_RAW\CASME2-RAW"
 DIR = "C:\Users\Valerie\Desktop\MicroExpress\CASME2"
 
+NSCALES = 5
+NORIENT =  8
+D1 = 14
+D2 = 11
 
 excelFile = os.path.join( DIR, "CASME2-coding-20140508.xlsx")
 table = pd.ExcelFile( excelFile )
@@ -237,7 +243,7 @@ t = table.parse( )
 
 labelInfo  = {}
 frameInfo = {}
-featureInfo = []
+featureInfo = np.array([ ] ).reshape( 0, NSCALES * NORIENT * D1 * D2 )
 
 
 tf = 0
@@ -260,8 +266,8 @@ for sub in os.listdir( DATA ):
             frameInfo = getFrameParams( intLabelInfo, labelParams, f, frame )
             frameInfo.update( intLabelInfo )
             labelInfo.update( { tf :  frameInfo } )
-            img = downsample( readInImg( os.path.join( DATA, sub, vid, frame ) ) ) 
-            featureInfo.append( process( img, generateGabor( 9, 8 ) ) )
+            img = downsample( readInImg( os.path.join( DATA, sub, vid, frame ) ), D1, D2 ) 
+            featureInfo = np.vstack( [ featureInfo, process( img, generateGabor( NSCALES, NORIENT ) ) ])
             f += 1
             tf += 1
         v += 1
@@ -270,18 +276,28 @@ for sub in os.listdir( DATA ):
 
 labels = pd.DataFrame.from_dict( labelInfo, orient = 'index' )
 
-labels[ (labels['video'] == 0) & (labels['subject'] == 0) ]
+#labels[ (labels['video'] == 0) & (labels['subject'] == 0) ]
 
 
+ 
+### AdaBoost
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score
+import numpy as np
+import pandas as pd
+import math
+import pickle
+ 
+clf = AdaBoostClassifier( 
+    base_estimator = DecisionTreeClassifier( min_samples_leaf = 25, min_samples_split = 25),
+    n_estimators = 50,
+    algorithm='SAMME' )
+X = featureInfo
+Y = labels['emotion']
+clf.fit( X, Y ) 
 
 
-
-IMG = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\CASME2_RAW\CASME2-RAW\sub01\EP02_01f\img1.jpg"
-I = readInImg( IMG )
-plt.imshow( I, cmap = 'gray')
-plt.show() 
-
-newI = crop( I, 2.5, 2 )     
-plt.imshow( newI, cmap = 'gray')
-plt.show() 
-              
+             

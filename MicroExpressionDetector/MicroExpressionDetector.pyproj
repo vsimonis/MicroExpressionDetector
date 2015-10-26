@@ -24,6 +24,9 @@
   <ItemGroup>
     <Compile Include="active_shape_models\ApplyASM.py" />
     <Compile Include="active_shape_models\PointMovementCalculator.py" />
+    <Compile Include="data_mining\ValPandas.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="helpers\DrawFace.py" />
     <Compile Include="helpers\log.py">
       <SubType>Code</SubType>
@@ -112,6 +115,8 @@
     <Folder Include="legacy\" />
     <Folder Include="helpers\" />
     <Folder Include="machine_learning\" />
+    <Folder Include="data_parser\" />
+    <Folder Include="data_mining\" />
     <Folder Include="point_annotator\" />
     <Folder Include="tests\script_tests\image_processing\" />
     <Folder Include="shapes\" />
