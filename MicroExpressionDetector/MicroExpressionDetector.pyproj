@@ -27,11 +27,32 @@
     <Compile Include="data_mining\ValPandas.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="data_mining\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="data_parser\CASMEParser.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="data_parser\CASMELabels.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="data_parser\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="feature_extraction\GaborExtractor.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="feature_extraction\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="helpers\DrawFace.py" />
     <Compile Include="helpers\log.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="helpers\WriteUpHelper.py" />
+    <Compile Include="image_processing\PreProcessing.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="image_processing\TemplateMatcher.py" />
     <Compile Include="image_processing\__init__.py">
       <SubType>Code</SubType>
@@ -117,6 +138,7 @@
     <Folder Include="machine_learning\" />
     <Folder Include="data_parser\" />
     <Folder Include="data_mining\" />
+    <Folder Include="feature_extraction\" />
     <Folder Include="point_annotator\" />
     <Folder Include="tests\script_tests\image_processing\" />
     <Folder Include="shapes\" />
