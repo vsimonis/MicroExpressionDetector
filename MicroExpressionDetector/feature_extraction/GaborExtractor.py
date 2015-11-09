@@ -31,7 +31,7 @@ class GaborExtractor( object ):
          accum = np.zeros_like(img)
          imgs = []
          for kern in filters:
-             fimg = cv2.filter2D(img, cv2.CV_8UC3, kern)
+             fimg = cv2.filter2D(img, cv2.CV_32F, kern)
              np.maximum(accum, fimg, accum)
              imgs.append( accum )     #instead of fimg
          return np.ravel( imgs ) 
@@ -40,7 +40,7 @@ class GaborExtractor( object ):
     def processGaborRaw( img, filters):
         imgs = []
         for kern in filters:
-            fimg = cv2.filter2D(img, cv2.CV_8UC3, kern)
+            fimg = cv2.filter2D(img, cv2.CV_32F, kern)
             imgs.append( fimg )
         return imgs
 
