@@ -18,9 +18,10 @@ class GaborExtractor( object ):
         sigma = 1 #average of sigmas shown in Shen2006MutualBoost
         
         # possibility of using ellipse formulation of sigma with major and minor axis components
+        # orientations first then scales!!!
         filters = []
-        for f in frequencies :
-            for th in thetas :
+        for th in thetas :
+            for f in frequencies :
                 filters.append (cv2.getGaborKernel( (self.kSize,self.kSize), sigma, th, 1 / f, 1 ) )
         return filters
 
@@ -34,3 +35,14 @@ class GaborExtractor( object ):
              np.maximum(accum, fimg, accum)
              imgs.append( accum )     #instead of fimg
          return np.ravel( imgs ) 
+
+    @staticmethod
+    def processGaborRaw( img, filters):
+        imgs = []
+        for kern in filters:
+            fimg = cv2.filter2D(img, cv2.CV_8UC3, kern)
+            imgs.append( fimg )
+        return imgs
+
+    
+         

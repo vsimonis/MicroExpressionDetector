@@ -18,9 +18,15 @@ class PreProcessing(object):
         return img
 
     @staticmethod
-    def downsample( img, dim1, dim2 ):
+    def imgRes( img, scale ):
+        dims = np.shape( img )
+        nh, nw = map( lambda m: int(math.floor( m * scale)), dims )
+        return nh, nw
+    
+    @staticmethod
+    def downsample( img, nh, nw ):
         #img = cv2.resize( img, dsize= (dim,dim), fx = .1, fy = 0.1, interpolation = cv2.INTER_NEAREST )
-        img = cv2.resize( img, dsize= (dim1,dim2), interpolation = cv2.INTER_NEAREST )
+        img = cv2.resize( img, dsize= (nh, nw), interpolation = cv2.INTER_NEAREST )
         return img
 
     @staticmethod
