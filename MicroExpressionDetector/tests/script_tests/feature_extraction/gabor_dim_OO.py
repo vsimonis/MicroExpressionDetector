@@ -7,5 +7,5 @@ ep = "EP02_01f"
 img = "reg_img46.jpg"
 I = pp.readInImg( os.path.join( data, sub, ep, img) )
 
-gw = w( 5, 8, 15, 8 )
+gw = w( 5, 8, 15, 16)
 gw.process( I ) 
