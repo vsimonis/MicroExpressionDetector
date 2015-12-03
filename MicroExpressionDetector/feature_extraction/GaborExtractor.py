@@ -26,8 +26,8 @@ class GaborExtractor( object ):
         return filters
 
     ### https://cvtuts.wordpress.com/2014/04/27/gabor-filters-a-practical-overview/
-
-    def processGabor(self, img, filters):   ## apply all filters to one image
+    @staticmethod
+    def processGabor(img, filters):   ## apply all filters to one image
          accum = np.zeros_like(img)
          imgs = []
          for kern in filters:

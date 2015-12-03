@@ -5,64 +5,51 @@ import math
 
 class ValPandas(object):
  
-    def __init__ ( self, X = None, Y = None, df = None ):
-
+    def __init__ ( self, df ):
+        self.data = df
         self.sets = { 'train': 0,
                      'test': 1,
                      'val' : 2 }
-        self.X = X
-        self.Y = Y
-        self.df = df
-        
+        #self.feats = features
+        #self.label = label
 
     def addEmptyCols( self, colnames ):
         if type(colnames) is list:
-            temp = pd.DataFrame( np.zeros( (len( self.df), len(colnames)) ), 
+            temp = pd.DataFrame( np.zeros( (len( self.data), len(colnames)) ), 
                                 columns = colnames, 
-                                index = range(len(self.df)) )
-            self.df = self.df.join( temp ) 
+                                index = range(len(self.data)) )
+            self.data = self.data.join( temp ) 
     
     def addData( self, colName, vals, setStr):
         if setStr is None:
-            self.df.loc[:,colName] = vals
+            self.data.loc[:,colName] = vals
         else:
-            self.df.loc[ self.df.set == self.sets[setStr], colName ] = vals
+            self.data.loc[ self.data.set == self.sets[setStr], colName ] = vals
 
+    def sliceRows( self, condition ):
+        return self.data
     
     def splitData( self, ptr, pte, pval ):
         """ Adds a column to data called 'set' that creates 
         training, testing, validation according to probs given"""
-        if self.X is None:
-            self.df['set'] = self.sample( len( self.df), [ptr,pte,pval])
-        else:
-            self.X['set'] = self.sample( len( self.X), [ptr,pte,pval] )
-            self.Y['set'] = self.sample( len( self.Y), [ptr,pte,pval] )
-        
+        self.data['set'] = self.sample( len( self.data), [ptr,pte,pval])
+        self.splitSets = { }
         
     @property
     def train( self ):
-        if self.X is None:
-            return self.df[ self.df.set == self.sets['train'] ]
-        else:
-            return self.X[ self.X.set == self.sets['train'] ] , self.Y[ self.Y.set == self.sets['train'] ]
-            
+        return self.data[ self.data.set == self.sets['train'] ]
 
     @property
     def test( self ):
-        if self.X is None:
-            return self.df[ self.df.set == self.sets['test'] ]
-        else:
-            return self.X[ self.X.set == self.sets['test'] ] , self.Y[ self.Y.set == self.sets['test'] ]
-            
+        return self.data[ self.data.set == self.sets['test'] ]
     
     @property
     def val( self ):
-        if self.X is None:
-            return self.df[ self.df.set == self.sets['val'] ]
-        else:
-            return self.X[ self.X.set == self.sets['val'] ] , self.Y[ self.Y.set == self.sets['val'] ]
+        return self.data[ self.data.set == self.sets['val'] ]
 
     @staticmethod
+
+
     def sample( n, p ):
         """ Creates a list (of idxs) of length n, with class probas defined by 
         list p"""
@@ -79,15 +66,12 @@ class ValPandas(object):
         np.random.shuffle( ix )
         ix = list(ix)
         
+        print len(ix)
+        print n
 
         while n - len(ix) > 0:
             ix.append(0)
         return ix
 
     def getSubset( self, setStr ):
-        if self.X is None:
-            return self.df[ self.df.set == self.sets[setStr] ]
-        else:
-            return self.X[ self.X.set == self.sets[setStr] ], self.Y[ self.Y.set == self.sets[setStr] ]
-            
-
+        return self.data[ self.data.set == self.sets[setStr] ]

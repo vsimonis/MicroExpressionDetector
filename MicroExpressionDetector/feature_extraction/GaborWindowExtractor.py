@@ -16,14 +16,14 @@ class GaborWindowExtractor( GaborExtractor ):
         cs = list( cs )
         while nrect != 1:
             maxIx = np.argmax( cs )
-            self.replace( cs, 2, maxIx )
-            if maxIx == 0:
-                nrows += 1
-            else:   
-                ncols += 1
-            nrect /= 2
-
-        return cs, (2 ** nrows, 2 ** ncols)
+            if nrect % 2 == 0: #even
+                self.replace( cs, 2, maxIx )
+                if maxIx == 0:
+                    nrows += 2
+                else:   
+                    ncols += 2
+                nrect /= 2
+        return cs, (nrows, ncols)
 
     @staticmethod
     def replace( vect, mult, maxIx):
@@ -49,21 +49,16 @@ class GaborWindowExtractor( GaborExtractor ):
         return fImg[ maxLoc[0] ][ maxLoc[1] ]
 
 
-    def processGabor( self, img, filters ):
-
-        imgs = self.processGaborRaw( img, filters )
-
+    def process( self, I ):
+        f = self.generateGaborKernels()
+        imgs = self.processGaborRaw( I, f )
         fVect = []
         for fIx, fImg in enumerate( imgs ):
-
             o,s = self.getOrientationScaleIx( fIx, self.nOrientations, self.nScales )
-
             maxLocs = []
             rsize,  rIx = self.getRectangleParams( fImg )
-
             slices = self.sliceImg( fImg, rsize, rIx )
-            for sliceIx, slice in enumerate(slices):
- 
+            for slice in slices:
                 sliceR, sliceC = np.shape( slice )
                 if s == 0:
                     maxLoc = self.findMaxMag( slice )

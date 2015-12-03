@@ -23,23 +23,34 @@ def getRectangleParams( img, numRects): ## only works with even
     ncols = 0
     cs = np.shape( img )
     cs = list( cs )
-
+    print cs
     while numRects != 1:
         maxIx = np.argmax( cs )
-        replace( cs, 2, maxIx )
-        if maxIx == 0:
-            nrows += 1
-        else:
-            ncols += 1
-        numRects /= 2
-    print cs, 2**nrows, 2**ncols
-    return cs, (2**nrows, 2**ncols)
+        if numRects % 2 == 0: #even
+            replace( cs, 2, maxIx )
+            if maxIx == 0:
+                nrows += 2
+            else:   
+                ncols += 2
+            numRects /= 2
+        """    
+        elif numRects % 3 == 0:
+            replace( cs, 3, maxIx )
+            numRects /= 3
+        elif numRects % 5 == 0:
+            replace( cs, 5, maxIx )
+            numRects /= 5
+        elif numRects % 7 == 0:
+            replace( cs, 7, maxIx )
+            numRects /= 7
+        """
+    return cs, (nrows, ncols)
 
 
 def replace( vect, mult, maxIx):
     v = vect.pop( maxIx)
     vect.insert( maxIx, v / mult )
-
+    print vect
   
 
 def sliceImg( img, rectSize, rectIx ):
@@ -78,13 +89,13 @@ g = gab( ns, no, ksize )
 f = g.generateGaborKernels()
 imgs = g.processGaborRaw( I, f )
 
-fVect = []                                   
+fVect = []
 
 for fIx, fImg in enumerate( imgs ):
     o,s = getOrientationScaleIx( fIx, no, ns )
 
     maxLocs = []
-    rsize,  rIx = getRectangleParams( fImg, 128)
+    rsize,  rIx = getRectangleParams( fImg, 8 )
     slices = sliceImg( fImg, rsize, rIx )
 
     for slice in slices:
