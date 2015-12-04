@@ -1,4 +1,4 @@
-from data_parser.CASMEParser import CASMEParser
+﻿from data_parser.CASMEParser import CASMEParser
 import numpy as np
 import pandas as pd
 import os
@@ -13,7 +13,7 @@ res = [ 0.03, 0.04, 0.05, 0.06, 0.07 ]
 orient =  [ 8 ]
 scales = [ 5, 9 ]
 rects = [ 8, 16, 32, 64, 128]
-for method in ["ImgRes", "Rects"]:
+for method in ["ImgRes"]:
 
     for nScales in scales:
         for nOrient in orient:

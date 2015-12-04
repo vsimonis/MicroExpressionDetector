@@ -1,4 +1,4 @@
-### AdaBoost
+﻿### AdaBoost
 #from sklearn.ensemble import AdaBoostClassifier
 #from sklearn.naive_bayes import MultinomialNB
 #from sklearn.svm import SVC
@@ -21,7 +21,7 @@ results = {}
 i = 0
 for file in os.listdir( OUT ):
     if file != "CASME-Labels.csv":
-
+        print file
         ## Parse data
         a = file.split("-") 
         [_, m] = a[:2]
@@ -32,20 +32,20 @@ for file in os.listdir( OUT ):
         try:
             X = pd.DataFrame.from_csv( os.path.join( OUT, file ) )
         except MemoryError:
-            print "mem"
+            print "memReadIn"
             pass
         Y = pd.DataFrame.from_csv( os.path.join( OUT, l ))
         df = CASMEData( X = X, Y = Y )
         try:
             df.splitData( 0.6, 0.3, 0.1 )
         except MemoryError:
-            print "mem"
+            print "memSplit"
             pass
 
 
-        fig = plt.figure()
-        _ = plt.plot( [0.5,1], [0.5,1])
-        ax = fig.add_subplot(111)
+        #fig = plt.figure()
+        #_ = plt.plot( [0.5,1], [0.5,1])
+        #ax = fig.add_subplot(111)
         # Tune params
         maxTest = 0
         for ms in minSplit :                                  #actually minleaf, change name
@@ -57,32 +57,33 @@ for file in os.listdir( OUT ):
                 YpredTest = clf.predict( df.Xtest )
                 trainAcc = accuracy_score( df.Ytrain, YpredTrain )
                 testAcc = accuracy_score( df.Ytest, YpredTest)
-                _ = plt.scatter( trainAcc, testAcc )
-                _ = plt.xlabel( "Training Accuracy" )
-                _ = plt.ylabel( "Testing Accuracy" )
-
-                if trainAcc - testAcc < 0.1 and testAcc > maxTest   :
+                #_ = plt.scatter( trainAcc, testAcc )
+                #_ = plt.xlabel( "Training Accuracy" )
+                #_ = plt.ylabel( "Testing Accuracy" )
+                if testAcc > maxTest:
                     maxTest = testAcc
-                    _ = ax.annotate( '(%d, %d)' % (ms, 25), xy=( trainAcc, testAcc), textcoords='offset points', size = 8)
+                    if trainAcc - testAcc < 0.2  :
 
-                    results.update( { i : { "Method" : m,
-                                            "Scales": s,
-                                            "Orientations" : o,
-                                            "Height" : h,
-                                            "Width" : w,
-                                            "Rectangles" : r,
-                                            "Training" : trainAcc,
-                                            "Testing" : testAcc,
-                                            "MinLeaf" : ms} } )
+                       # _ = ax.annotate( '(%d, %d)' % (ms, 25), xy=( trainAcc, testAcc), textcoords='offset points', size = 8)
+
+                        results.update( { i : { "Method" : m,
+                                               "Scales": s,
+                                               "Orientations" : o,
+                                               "Height" : h,
+                                               "Width" : w,
+                                               "Rectangles" : r,
+                                               "Training" : trainAcc,
+                                               "Testing" : testAcc,
+                                               "MinLeaf" : ms} } )
 
                 
-                    i += 1
+                        i += 1
             except MemoryError:
                 print "mem"
                 pass
                         
-        fig.savefig( "out-%s-S%d-O%d-H%d-W%d-R%d.png" % ( m, s, o, h, w, r) )
-        plt.close( fig )
+        #fig.savefig( "out-%s-S%d-O%d-H%d-W%d-R%d.png" % ( m, s, o, h, w, r) )
+       # plt.close( fig )
 
 df = pd.DataFrame.from_dict( results, orient = 'index')
 df.to_csv( "results-dm.csv" )
