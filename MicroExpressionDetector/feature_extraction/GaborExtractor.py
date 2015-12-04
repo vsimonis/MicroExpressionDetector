@@ -1,4 +1,4 @@
-import math
+﻿import math
 import cv2
 import numpy as np
 
@@ -26,15 +26,9 @@ class GaborExtractor( object ):
         return filters
 
     ### https://cvtuts.wordpress.com/2014/04/27/gabor-filters-a-practical-overview/
-    @staticmethod
-    def processGabor(img, filters):   ## apply all filters to one image
-         accum = np.zeros_like(img)
-         imgs = []
-         for kern in filters:
-             fimg = cv2.filter2D(img, cv2.CV_32F, kern)
-             np.maximum(accum, fimg, accum)
-             imgs.append( accum )     #instead of fimg
-         return np.ravel( imgs ) 
+
+    def processGabor(self, img, filters):   ## apply all filters to one image
+        return np.ravel( GaborExtractor.processGaborRaw( img, filters) )
 
     @staticmethod
     def processGaborRaw( img, filters):

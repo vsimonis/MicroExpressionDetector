@@ -36,9 +36,11 @@
     <Compile Include="data_parser\CASMELabels.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="data_parser\CASMEParserMem.py" />
     <Compile Include="data_parser\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="dts.py" />
     <Compile Include="feature_extraction\GaborWindowExtractor.py">
       <SubType>Code</SubType>
     </Compile>
@@ -62,6 +64,7 @@
     </Compile>
     <Compile Include="tests\script_tests\feature_extraction\gabor_dimensionality.py" />
     <Compile Include="tests\script_tests\feature_extraction\gabor_dim_OO.py" />
+    <Compile Include="tests\script_tests\feature_extraction\vidtoImg.py" />
     <Compile Include="tests\script_tests\image_processing\correlation.py" />
     <Compile Include="tests\script_tests\image_processing\template_matching.py" />
     <Compile Include="tests\script_tests\image_processing\template_matching_class.py">
