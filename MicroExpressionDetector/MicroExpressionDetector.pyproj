@@ -24,6 +24,8 @@
   <ItemGroup>
     <Compile Include="active_shape_models\ApplyASM.py" />
     <Compile Include="active_shape_models\PointMovementCalculator.py" />
+    <Compile Include="data_mining\CASMEData.py" />
+    <Compile Include="data_mining\ParamTune.py" />
     <Compile Include="data_mining\ValPandas.py">
       <SubType>Code</SubType>
     </Compile>
@@ -52,6 +54,9 @@
     </Compile>
     <Compile Include="helpers\DrawFace.py" />
     <Compile Include="helpers\log.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="helpers\TexTable.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="helpers\WriteUpHelper.py" />

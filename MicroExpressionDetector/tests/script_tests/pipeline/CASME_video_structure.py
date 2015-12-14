@@ -1,5 +1,12 @@
+﻿"""
+Gets tallies on how many videos, etc... are in the directory tree
+"""
+
+
 import os
 DATA = "C:\Users\Valerie\Desktop\MicroExpress\CASME2\Cropped\Cropped"
+DATA = "C:\Users\Valerie\Desktop\cropped2"
+
 ### NAVIGATING THE IMAGE DATA PATHS      (want to be recursive) 
 ts = 0
 v = 0

@@ -1,7 +1,8 @@
-import math
+﻿import math
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
+from shapes.Point import Point
 
 class PreProcessing(object):
     def __init__( self ):
@@ -11,11 +12,16 @@ class PreProcessing(object):
     def readInImg( imgPath ):
         img = cv2.imread( imgPath )
         img = cv2.cvtColor( img, cv2.COLOR_BGR2GRAY )
+        return img
+    
+    @staticmethod
+    def readInCrop( imgPath ):
+        img = readInImg( imgPath )
         if np.shape( img )[0] > 400:
             img = crop( img, 2.5, 2)
-        # resize to 28ish * 23ish
-    
         return img
+
+
 
     @staticmethod
     def imgRes( img, scale ):
@@ -31,17 +37,19 @@ class PreProcessing(object):
 
     @staticmethod
     def faceDetection( img ):
-        face_cascade = cv2.CascadeClassifier('C:\\OpenCV\\data\\haarcascades\\haarcascade_frontalface_default.xml')
-        faces = face_cascade.detectMultiScale( img, 1.3, 5)
+        face_cascade = cv2.CascadeClassifier( 'C:\\OpenCV\\data\\haarcascades\\haarcascade_frontalface_default.xml')
+        face_cascade = cv2.CascadeClassifier( 'C:\\OpenCV\\data\\haarcascades\\haarcascade_frontalface_alt_tree.xml')
+        faces = face_cascade.detectMultiScale( img, 1.1, 2)
+        
         x,y,w,h = faces[0]
         roi_gray = img[y:y+h, x:x+w]   
         return roi_gray
 
     @staticmethod    
     def eyeDetection( img ):
-        eye_cascade = cv2.CascadeClassifier('C:\\OpenCV\\data\\haarcascades\\haarcascade_eye.xml')
-        eyes = eye_cascade.detectMultiScale( img )
-        eye1, eye2 = filterFoundEyes( eyes, img )
+        eye_cascade = cv2.CascadeClassifier('C:\\OpenCV\\data\\haarcascades\\haarcascade_eye_tree_eyeglasses.xml')
+        eyes = eye_cascade.detectMultiScale( img, 1.1, 2)
+        eye1, eye2 = PreProcessing.filterFoundEyes( eyes, img )
         return eye1, eye2
 
 
@@ -51,13 +59,13 @@ class PreProcessing(object):
     def crop( img, fh, fw ):       ## In terms of x, y not h, w !!!   # or the other way>>>
 
         # Using eyes
-        eye1, eye2 = eyeDetection( img )
+        eye1, eye2 = PreProcessing.eyeDetection( img )
         d = Point.dist( eye1, eye2 )
 
         newH = int(fh * d)  #set more firmly for other types of images for consistent size
         newW = int(fw * d)
     
-        y0, x0 = newEyeLoc( eye1, eye2, newH, newW, d )
+        y0, x0 = PreProcessing.newEyeLoc( eye1, eye2, newH, newW, d )
 
         return img[ y0 : y0 + newH, x0 : x0  + newW ]
 
@@ -93,7 +101,7 @@ class PreProcessing(object):
                 eyeArr.append( ( ex, ey, ew, eh ) )
 
             # filter by area
-            eyeAreas = map( areaRect, eyeArr )
+            eyeAreas = map( PreProcessing.areaRect, eyeArr )
             ix = np.argmax( eyeAreas )
             eye1 = eyeArr[ix]
     
